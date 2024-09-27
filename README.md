@@ -34,6 +34,43 @@ Token：这个就是你上一步在GitHub获取到的Token。
 
 存储路径，这个就是配置上传的图片放到你的仓库中的哪一个子目录里，为空默认放你仓库根目录
 
+
+
+worker最终代码，并且可以不用cdn.jsdelivr.net，并且绑定自己域名好用些：
+
+~~~ javascript
+addEventListener('fetch', event => {
+  event.respondWith(handleRequest(event.request))
+})
+
+async function handleRequest(request) {
+  // 获取请求的 URL
+  const url = new URL(request.url)
+  
+  // 提取完整路径
+  const filePath = url.pathname.slice(1) // 去掉开头的斜杠
+
+  // 设置实际代理地址
+  const proxyUrl = `https://raw.githubusercontent.com/36304099/images/main/${filePath}`
+
+  // 发起代理请求
+  const response = await fetch(proxyUrl)
+
+  // 返回响应
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: response.headers
+  })
+}
+~~~
+
+
+
+
+
+## 下面原文内容没用到：
+
 **自定义域名：我们可以采用 cdn.jsdelivr.net 来加速访问你的仓库
 
 配置方法：https://cdn.jsdelivr.net/gh/github用户名/仓库名/
@@ -76,31 +113,3 @@ server {
 
 访问测试
 
-
-worker最终代码：
-
-
-addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request))
-})
-
-async function handleRequest(request) {
-  // 获取请求的 URL
-  const url = new URL(request.url)
-  
-  // 提取完整路径
-  const filePath = url.pathname.slice(1) // 去掉开头的斜杠
-
-  // 设置实际代理地址
-  const proxyUrl = `https://raw.githubusercontent.com/36304099/images/main/${filePath}`
-
-  // 发起代理请求
-  const response = await fetch(proxyUrl)
-
-  // 返回响应
-  return new Response(response.body, {
-    status: response.status,
-    statusText: response.statusText,
-    headers: response.headers
-  })
-}
