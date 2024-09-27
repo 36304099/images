@@ -75,3 +75,32 @@ server {
 }
 
 访问测试
+
+
+worker最终代码：
+
+
+addEventListener('fetch', event => {
+  event.respondWith(handleRequest(event.request))
+})
+
+async function handleRequest(request) {
+  // 获取请求的 URL
+  const url = new URL(request.url)
+  
+  // 提取完整路径
+  const filePath = url.pathname.slice(1) // 去掉开头的斜杠
+
+  // 设置实际代理地址
+  const proxyUrl = `https://raw.githubusercontent.com/36304099/images/main/${filePath}`
+
+  // 发起代理请求
+  const response = await fetch(proxyUrl)
+
+  // 返回响应
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: response.headers
+  })
+}
