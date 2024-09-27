@@ -1,27 +1,23 @@
-# images
+# cloudflare + github + 自己域名 搭建免费永久图床
 
-搭建教程 https://www.geeklinux.cn/jsjc/166.html
+引用搭建教程 https://www.geeklinux.cn/jsjc/166.html
 
-picGo
+demo: https://pic.beijin.email/picGo/皮卡.png
 
 
-创建 GitHub仓库
+### 创建 GitHub仓库 ： 
 在GitHUB上创建一个仓库，专门用于存放图片的，怎么创建就不用多说了吧，不能使用私有仓库！！！
 
 获取 GitHub Token
-需要获取GitHub Token，后面会用到
+需要获取GitHub Token， tokens ：https://github.com/settings/tokens
 
-打开：https://github.com/settings/profile
-
-找到 Developer settings,然后找到 tokens (classic)：https://github.com/settings/tokens
-
-创建一个新的token
+创建一个新的token(classic方式可以设置Expiration永不过期)
 
 勾选repo，将Expiration过期时间调整为永不过期
 
 然后记住你的token，接下来会用到
 
-Picgo配置
+### Picgo配置
 下载按照picgo，下载地址：https://molunerfinn.com/PicGo/
 
 安装完成后，点击图床设置，GitHub
@@ -35,8 +31,11 @@ Token：这个就是你上一步在GitHub获取到的Token。
 存储路径，这个就是配置上传的图片放到你的仓库中的哪一个子目录里，为空默认放你仓库根目录
 
 
+### cloudflare设置
 
-worker最终代码，并且可以不用cdn.jsdelivr.net，并且绑定自己域名好用些：
+cloudflare上创建账号，新建worker
+
+worker最终代码，并且绑定自己域名(不是必须)好用些：
 
 ~~~ javascript
 addEventListener('fetch', event => {
@@ -69,7 +68,7 @@ async function handleRequest(request) {
 
 
 
-## 下面原文内容没用到：
+## 下面引用的原文内容没用到(可以不用cdn.jsdelivr.net)
 
 **自定义域名：我们可以采用 cdn.jsdelivr.net 来加速访问你的仓库
 
